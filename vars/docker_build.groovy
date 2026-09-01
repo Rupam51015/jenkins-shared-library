@@ -1,6 +1,6 @@
 def call(Map config = [:]){
     def imageTag = config.imageTag ?: 'latest';
-    def imageName = config.imageName ?: error("Image Tag is required");
+    def imageName = config.imageName ?: error("Image Name is required");
     def fileName = config.fileName ?: 'Dockerfile';
     def context = config.context ?: '.'
 

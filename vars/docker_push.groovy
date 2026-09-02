@@ -1,11 +1,16 @@
-def call(String credId, String imageName){
+def call(String credId, String imageName) {
     withCredentials([usernamePassword(
-        credentialsId: "${credId}",
+        credentialsId: "${CredentialsId}",
         passwordVariable: "dockerHubPass",
         usernameVariable: "dockerHubUser"
     )]) {
-    sh "echo '${dockerHubPass}' | docker login -u '${dockerHubUser}' --password-stdin"
-    sh "docker tag ${imageName}:latest ${env.dockerHubUser}/${imageName}"
-    sh "docker push ${env.dockerHubUser}/${imageName}:latest"
+        echo "Logging into Docker Hub..."
+        sh "echo '${dockerHubPass}' | docker login -u '${dockerHubUser}' --password-stdin"
+        
+        echo "Tagging local image [ ${imageName}:latest ] to match registry namespace..."
+        sh "docker tag ${imageName}:latest ${dockerHubUser}/${imageName}:latest"
+        
+        echo "Pushing image to Docker Hub repository..."
+        sh "docker push ${dockerHubUser}/${imageName}:latest"
     }
 }

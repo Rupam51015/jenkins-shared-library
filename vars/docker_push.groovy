@@ -4,8 +4,8 @@ def call(String credId, String imageName){
         passwordVariable: "dockerHubPass",
         usernameVariable: "dockerHubUser"
     )]) {
-    sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
-    sh "docker image tag ${imageName} ${env.dockerHubUser}/${imageName}"
+    sh "echo '${dockerHubPass}' | docker login -u '${dockerHubUser}' --password-stdin"
+    sh "docker tag ${imageName}:latest ${env.dockerHubUser}/${imageName}"
     sh "docker push ${env.dockerHubUser}/${imageName}:latest"
     }
 }
